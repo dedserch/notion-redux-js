@@ -1,0 +1,4 @@
+export const FETCH_START = "USER/FETCH/START"
+export const FETCH_ERROR = "USER/FETCH/ERROR"
+export const FETCH_SUCCESS = "USER/FETCH/SUCCESS"
+export const SET_USER = "USER/SET"
