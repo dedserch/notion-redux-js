@@ -1,9 +1,9 @@
 import * as actionTypes from "../../constants/actionNote.constant"
 import { NoteService } from "../../services/NoteService"
 
-export const fetchNotes = () => (dispatch) => {
+export const fetchNotes = (userId) => (dispatch) => {
   dispatch({ type: actionTypes.FETCH_NOTES_START })
-  NoteService.getAll()
+  NoteService.getAll(userId)
     .then((notes) => {
       dispatch({ type: actionTypes.FETCH_NOTES_SUCCESS, payload: notes })
     })
@@ -12,9 +12,9 @@ export const fetchNotes = () => (dispatch) => {
     })
 }
 
-export const fetchNote = (id) => (dispatch) => {
+export const fetchNote = (id, userId) => (dispatch) => {
   dispatch({ type: actionTypes.FETCH_NOTE_START })
-  NoteService.findById(id)
+  NoteService.findById(id, userId)
     .then((note) => {
       dispatch({ type: actionTypes.FETCH_NOTE_SUCCESS, payload: note })
     })

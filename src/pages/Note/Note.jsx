@@ -4,24 +4,26 @@ import { useDispatch, useSelector } from "react-redux"
 import { Button } from "../../components/ui/Button"
 import { selectNote } from "../../redux/note/selectors"
 import { fetchNote, removeNote } from "../../redux/note/action"
-
+import { selectUser } from "../../redux/user/selectors"
 
 export const Note = () => {
   const { noteId } = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const note = useSelector((state) => selectNote(state))
+  const user = useSelector(selectUser)
 
   useEffect(() => {
-    if (noteId) {
-      dispatch(fetchNote(noteId))
+    if (noteId && user.id) {
+      dispatch(fetchNote(noteId, user.id))
     }
-  }, [noteId, dispatch])
+  }, [dispatch])
+
+  const note = useSelector(selectNote)
 
   const handleDelete = () => {
-    if (note && note.id) {
-      dispatch(removeNote(note.id))
+    if (note && note.id && user.id) {
+      dispatch(removeNote(note.id, user.id))
       navigate("/notes")
     }
   }

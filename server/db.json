@@ -11,7 +11,35 @@
       "email": "user1@gmail.com",
       "password": "Asdf1@gmail.com",
       "createdAt": "2024-12-10T19:06:26.690Z"
+    },
+    {
+      "id": "4f7d",
+      "email": "dedtest@mail.ru",
+      "password": "dedserch2005A",
+      "createdAt": "2024-12-11T17:12:23.799Z"
     }
   ],
-  "notes": []
+  "notes": [
+    {
+      "id": "7f43",
+      "title": "Okey",
+      "body": "",
+      "userId": "c701",
+      "createdAt": "2024-12-10T21:30:54.697Z"
+    },
+    {
+      "id": "41aa",
+      "title": "Вроде работает",
+      "body": "",
+      "userId": "4f7d",
+      "createdAt": "2024-12-11T18:26:16.930Z"
+    },
+    {
+      "id": "85a0",
+      "title": "Мдаааааа",
+      "body": "",
+      "userId": "acb3",
+      "createdAt": "2024-12-11T21:23:03.963Z"
+    }
+  ]
 }

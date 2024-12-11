@@ -1,7 +1,7 @@
 import React from "react"
 import { NoteCard } from "./NoteCard"
 
-export const NotesList = ({ notes, onDelete }) => {
+export const NotesList = React.memo(({ notes, onDelete }) => {
   return (
     <div className="flex flex-col gap-5">
       {notes.map(note => (
@@ -9,4 +9,4 @@ export const NotesList = ({ notes, onDelete }) => {
       ))}
     </div>
   )
-}
+})

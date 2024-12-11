@@ -30,5 +30,5 @@ export const register = (user) => (dispatch) => {
 export const logout = () => (dispatch) => {
   AuthService.logout()
   localStorage.removeItem("userId")
-  dispatch({ type: actionTypes.SET_USER, payload: null })
+  dispatch({ type: actionTypes.RESET_STATE })
 }

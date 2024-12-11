@@ -3,7 +3,6 @@ import * as actionTypes from "../../constants/actionUser.constant"
 const INITIAL_STATE = {
   loading: false,
   user: null,
-  users: [],
   error: null,
 }
 
@@ -17,6 +16,8 @@ export const userReducer = (state = INITIAL_STATE, { type, payload }) => {
       return { ...state, loading: false, error: payload }
     case actionTypes.SET_USER:
       return { ...state, user: payload }
+    case actionTypes.RESET_STATE:
+      return { ...INITIAL_STATE }
     default:
       return state
   }

@@ -11,6 +11,7 @@ import {
   selectLoadingNotes,
   selectErrorNote,
 } from "../../../redux/note/selectors"
+import { selectUser } from "../../../redux/user/selectors"
 
 export const NoteForm = ({ isEdit, noteId }) => {
   const [title, setTitle] = useState("")
@@ -22,15 +23,18 @@ export const NoteForm = ({ isEdit, noteId }) => {
   const note = useSelector(selectNote)
   const loading = useSelector(selectLoadingNotes)
   const error = useSelector(selectErrorNote)
+  const user = useSelector(selectUser)
+
+  const userId = user?.id
 
   useEffect(() => {
-    if (isEdit && noteId) {
-      dispatch(fetchNote(noteId))
+    if (isEdit && noteId && userId) {
+      dispatch(fetchNote(noteId, userId))
     } else {
-      setTitle("") 
-      setDescription("") 
+      setTitle("")
+      setDescription("")
     }
-  }, [isEdit, noteId, dispatch])
+  }, [isEdit, noteId, userId, dispatch])
 
   useEffect(() => {
     if (note && isEdit) {
@@ -38,6 +42,12 @@ export const NoteForm = ({ isEdit, noteId }) => {
       setDescription(note.body)
     }
   }, [note, isEdit])
+
+  useEffect(() => {
+    if (isEdit && note && note.userId !== userId) {
+      navigate("*")
+    }
+  }, [note, isEdit, userId, navigate])
 
   const validateForm = () => {
     const newErrors = { title: "", description: "" }
@@ -59,7 +69,7 @@ export const NoteForm = ({ isEdit, noteId }) => {
     const noteData = {
       title,
       body: description,
-      authorId: localStorage.getItem("userId") || "",
+      userId,
     }
 
     try {
@@ -79,45 +89,47 @@ export const NoteForm = ({ isEdit, noteId }) => {
     <div className="min-h-screen flex items-center flex-col bg-gray-100 py-8">
       <div className="max-w-2xl w-full bg-white p-8 rounded-lg shadow-xl">
         <div className="mb-6 flex justify-start">
-          <Button name="Back to Notes" onClick={() => navigate("/notes")} />
+          <Button name="← Back" onClick={() => navigate("/notes")} />
         </div>
         <h2 className="text-3xl font-bold text-center mb-6">
           {isEdit ? "Edit Note" : "Create Note"}
         </h2>
         {loading && <div>Loading...</div>}
         {error && <div className="text-red-500">Error: {error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700">Title</label>
-            <Input
-              name="title"
-              type="text"
-              value={title}
-              placeholder="Enter the title of your note"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            {errors.title && (
-              <p className="text-red-500 text-sm">{errors.title}</p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700">
-              Description (Optional)
-            </label>
-            <TextArea
-              name="description"
-              value={description}
-              placeholder="Enter the body of your note"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            {errors.description && (
-              <p className="text-red-500 text-sm">{errors.description}</p>
-            )}
-          </div>
-          <div className="flex justify-center mt-6">
-            <Button name={isEdit ? "Edit" : "Create"} />
-          </div>
-        </form>
+        {!loading && (
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700">Title</label>
+              <Input
+                name="title"
+                type="text"
+                value={title}
+                placeholder="Enter the title of your note"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              {errors.title && (
+                <p className="text-red-500 text-sm">{errors.title}</p>
+              )}
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">
+                Description (Optional)
+              </label>
+              <TextArea
+                name="description"
+                value={description}
+                placeholder="Enter the body of your note"
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              {errors.description && (
+                <p className="text-red-500 text-sm">{errors.description}</p>
+              )}
+            </div>
+            <div className="flex justify-center mt-6">
+              <Button name={isEdit ? "Edit" : "Create"} />
+            </div>
+          </form>
+        )}
       </div>
     </div>
   )

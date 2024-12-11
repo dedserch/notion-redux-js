@@ -10,14 +10,20 @@ export class NoteService {
     return response.data
   }
 
-  static async findById(id) {
+  static async findById(id, userId) {
     const response = await instance.get(`/notes/${id}`)
-    return response.data || null
+    const note = response.data || null
+    if (note && note.userId !== userId) {
+      return null
+    }
+    return note
   }
-
-  static async getAll() {
-    const response = await instance.get("/notes")
-    return response.data
+  
+  static async getAll(userId) {
+    const response = await instance.get("/notes", {
+      params: { userId },
+    })
+    return response.data.filter((note) => note.userId === userId)
   }
 
   static async update(id, updatedNote) {

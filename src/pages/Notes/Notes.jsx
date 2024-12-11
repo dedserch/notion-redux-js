@@ -9,19 +9,19 @@ import { fetchNotes, removeNote } from "../../redux/note/action"
 
 export const Notes = () => {
   const dispatch = useDispatch()
-
-  const notes = useSelector(selectAllNotes)
   const user = useSelector(selectUser)
 
+  
   useEffect(() => {
-    dispatch(fetchNotes())
+    if (user?.id) {
+      dispatch(fetchNotes(user.id))
+    }
   }, [dispatch])
 
-  const userNotes = notes.filter((note) => note.authorId === user.id)
+  const notes = useSelector(selectAllNotes)
 
-  const handleDelete = async (id) => {
-    await dispatch(removeNote(id))
-    dispatch(fetchNotes())
+  const handleDelete = (id) => {
+    dispatch(removeNote(id))
   }
 
   return (
@@ -33,7 +33,7 @@ export const Notes = () => {
           </Link>
         </div>
         <h2 className="text-3xl font-bold text-center mb-6">Your Notes</h2>
-        <NotesList notes={userNotes} onDelete={handleDelete} />
+        <NotesList notes={notes} onDelete={handleDelete} />
       </div>
     </div>
   )
